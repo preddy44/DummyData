@@ -76,7 +76,8 @@ def postal(*args, **_):
         raise DDFunctionException(
             'postal function does not accept args, %d given' % len(args)
         )
-    return str(integer(10000, 99999))
+    zipcode = integer(1000, 98789)
+    return str(format(zipcode, '05'))
 
 
 def phone(*args, **_):
@@ -89,8 +90,8 @@ def phone(*args, **_):
         )
     return ''.join(
         [
-            '(', str(integer(100, 999)), ') ',
-            str(integer(100, 999)), '-', str(integer(1000, 9999))
+            '0',str(integer(1,9)),str(integer(10, 99)),str(integer(10, 99)),
+            str(integer(10, 99)),str(integer(10, 99))
         ]
     )
 
@@ -314,14 +315,14 @@ def date(*args, **_):
         )
     if args:
         try:
-            start = datetime.strptime(args[0], '%m/%d/%Y')
+            start = datetime.strptime(args[0], '%Y/%m/%d')
         except ValueError:
             # invalid date
             raise DDFunctionException(
                 'argument %s supplied to date function is invalid' % args[0]
             )
         try:
-            end = datetime.strptime(args[1], '%m/%d/%Y')
+            end = datetime.strptime(args[1], '%Y/%m/%d')
         except ValueError:
             # invalid date
             raise DDFunctionException(
@@ -330,8 +331,8 @@ def date(*args, **_):
         delta = end - start
         days = randint(0, delta.days)
         return_date = start + timedelta(days=days)
-        return return_date.strftime('%m/%d/%Y')
-    return dt.today().strftime('%m/%d/%Y')
+        return return_date.strftime('%Y/%m/%d')
+    return dt.today().strftime('%Y/%m/%d')
 
 
 def time(*args, **_):
